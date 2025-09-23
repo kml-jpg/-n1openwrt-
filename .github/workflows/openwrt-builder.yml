@@ -13,13 +13,13 @@
 name: OpenWrt Builder
 
 on:
-  repository_dispatch:
+  repository_dispatch:  
   workflow_dispatch:
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  FEEDS_CONF: feeds.conf.default
+  FEEDS_CONF: feeds.conf.default  
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
@@ -55,7 +55,7 @@ jobs:
       run: |
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH openwrt
-        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt  
 
     - name: Load custom feeds
       run: |
@@ -68,7 +68,7 @@ jobs:
       run: cd openwrt && ./scripts/feeds update -a
 
     - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
+      run: cd openwrt && ./scripts/feeds install -a  
 
     - name: Load custom configuration
       run: |
@@ -82,7 +82,7 @@ jobs:
       id: package
       run: |
         cd openwrt
-        make defconfig
+        make defconfig  
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
@@ -138,10 +138,10 @@ jobs:
       uses: softprops/action-gh-release@master
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}           
       with:
-        tag_name: ${{ steps.tag.outputs.release_tag }}
-        body_path: release.txt
+        tag_name: ${{ steps.tag.outputs.release_tag }}  
+        body_path: release.txt  
         files: ${{ env.FIRMWARE }}/*
 
     - name: Delete workflow runs
@@ -152,7 +152,7 @@ jobs:
 
     - name: Remove old Releases
       uses: dev-drprasad/delete-older-releases@master
-      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()  
       with:
         keep_latest: 3
         delete_tags: true
