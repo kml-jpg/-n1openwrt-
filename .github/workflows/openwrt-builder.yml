@@ -15,7 +15,7 @@ name: OpenWrt Builder
 
 on:
   repository_dispatch:
-  workflow_dispatch:
+  workflow_dispatch:  
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede  
@@ -141,14 +141,14 @@ jobs:
       uses: softprops/action-gh-release@master
       if: steps.tag.outputs.status == 'success' && !cancelled()  
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_PAT }}           
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}             
       with:
-        tag_name: ${{ steps.tag.outputs.release_tag }}    
-        body_path: release.txt  
+        tag_name: ${{ steps.tag.outputs.release_tag }}        
+        body_path: release.txt    
         files: ${{ env.FIRMWARE }}/*
 
     - name: Delete workflow runs
-      uses: Mattraks/delete-workflow-runs@main
+      uses: Mattraks/delete-workflow-runs@main  
       with:
         retain_days: 0
         keep_minimum_runs: 2
